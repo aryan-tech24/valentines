@@ -8,8 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- EmailJS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
         * {
@@ -471,16 +469,8 @@
     <div class="hearts-container" id="hearts-container"></div>
 
     <script>
-        // EmailJS Configuration
-        // TODO: Replace these with your actual EmailJS credentials
-        const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
-        const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
-        const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-
-        // Initialize EmailJS
-        (function() {
-            emailjs.init(EMAILJS_PUBLIC_KEY);
-        })();
+        // Discord Webhook
+        const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1466152120607572062/z1kSp70tO84OO5Kz_F-6u9nOx8TxhmVPfnbAbw7F-_k7mypFIALg3Kj1xm8ky9sIwqbl';
 
         // Generate petals for sunflowers
         document.querySelectorAll('.flower-head').forEach(head => {
@@ -555,7 +545,7 @@
             valentineScreen.classList.add('hidden');
             successScreen.style.display = 'flex';
             createHearts();
-            sendEmailNotification();
+            sendNotification();
         });
 
         // No button - runs away!
@@ -599,21 +589,15 @@
             }
         }
 
-        // Send email notification
-        function sendEmailNotification() {
-            const templateParams = {
-                to_email: 'aryanghadge811@gmail.com',
-                message: 'Rashi said YES! 🌻💛',
-                reply_time: new Date().toLocaleString()
-            };
-
-            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-                .then(() => {
-                    console.log('Email sent successfully!');
+        // Send Discord notification
+        function sendNotification() {
+            fetch(DISCORD_WEBHOOK, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: '🌻 **Rashi said YES!** 🌻\n\nTime: ' + new Date().toLocaleString()
                 })
-                .catch((error) => {
-                    console.log('Email failed to send:', error);
-                });
+            }).catch(() => {});
         }
     </script>
 </body>
